@@ -35,10 +35,11 @@ body {
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--outline);
 }
-.header-inner { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
-.brand { display: flex; align-items: center; gap: 10px; }
+.header-inner { display: flex; align-items: center; justify-content: flex-start; gap: 20px; padding: 14px 0; }
+.brand { display: flex; align-items: center; gap: 12px; }
 .brand-logo { width: 28px; height: 28px; }
-.brand-name { font-weight: 700; letter-spacing: 0.4px; }
+.brand-name { font-weight: 700; letter-spacing: 0.4px; font-size: 1.4rem; }
+.brand i { font-size: 1.8rem; color: var(--primary); }
 
 /* Navigation */
 .nav { display: flex; align-items: center; gap: 14px; }
@@ -114,6 +115,7 @@ body {
   transition: all 0.2s ease;
   flex-direction: column;
   gap: 4px;
+  order: -1;
 }
 .nav-toggle:hover {
   background: rgba(255,255,255,0.06);
@@ -142,6 +144,7 @@ body {
 /* Hamburger menu styles - Solo para crear-factura.html */
 .crear-factura-page .nav-toggle {
   display: inline-flex !important;
+  order: -1;
 }
 
 .crear-factura-page .nav {
