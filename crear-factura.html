@@ -69,9 +69,9 @@
           <div class="submenu">
             <a class="submenu-item" href="datos-empresa.html">Datos de la Empresa</a>
             <a class="submenu-item" href="resoluciones-numeracion.html">Resoluciones de Numeración</a>
-            <a class="submenu-item" href="#">Certificados Digitales</a>
-            <a class="submenu-item" href="#">Clientes</a>
-            <a class="submenu-item" href="#">Productos/Servicios</a>
+            <a class="submenu-item" href="certificados-digitales.html">Certificados Digitales</a>
+            <a class="submenu-item" href="clientes.html">Clientes</a>
+            <a class="submenu-item" href="productos-servicios.html">Productos/Servicios</a>
           </div>
         </div>
 
@@ -81,9 +81,9 @@
              <span class="menu-arrow">▼</span>
            </div>
           <div class="submenu">
-            <a class="submenu-item" href="#">Usuarios</a>
-            <a class="submenu-item" href="#">Perfiles</a>
-            <a class="submenu-item" href="#">Roles y Permisos</a>
+            <a class="submenu-item" href="usuarios.html">Usuarios</a>
+            <a class="submenu-item" href="perfiles.html">Perfiles</a>
+            <a class="submenu-item" href="roles-permisos.html">Roles y Permisos</a>
           </div>
         </div>
 
@@ -116,19 +116,40 @@
 
     <!-- Overlay para cerrar el menú -->
     <div class="menu-overlay" id="menuOverlay"></div>
-      </div>
-    </header>
 
     <main>
       <section class="factura-section">
         <div class="container">
           <div class="factura-header">
-            <h1>Crear Factura Electrónica</h1>
-            <p class="muted">Completa los datos para generar tu factura con integración DIAN</p>
+            <h1>Crear Documento Electrónico</h1>
+            <p class="muted">Selecciona el tipo de documento y completa los datos requeridos</p>
+          </div>
+
+          <!-- Tipo de Documento -->
+          <div class="form-section" id="docTipoSection">
+            <h2>Tipo de Documento</h2>
+            <div class="form-grid">
+              <label class="field">
+                <span>Tipo *</span>
+                <select id="docTipo" required>
+                  <option value="FACTURA" selected>Factura</option>
+                  <option value="NOTA_CREDITO">Nota Crédito</option>
+                  <option value="NOTA_DEBITO">Nota Débito</option>
+                  <option value="DOCUMENTO_SOPORTE">Documento Soporte</option>
+                </select>
+              </label>
+              <label class="field" id="docFacturaRelacionadaField" style="display: none;">
+                <span>Factura relacionada</span>
+                <select id="docFacturaRelacionada">
+                  <option value="">Sin selección</option>
+                </select>
+                <small class="field-help">Para notas puedes asociar una factura existente</small>
+              </label>
+            </div>
           </div>
 
           <form class="factura-form" id="facturaForm">
-            <!-- Datos de la Empresa -->
+            <!-- Datos de la Empresa (solo Factura) -->
             <div class="form-section">
               <h2>Datos de la Empresa</h2>
               <div class="form-grid">
@@ -156,7 +177,7 @@
               </div>
             </div>
 
-            <!-- Datos del Cliente -->
+            <!-- Datos del Cliente (solo Factura) -->
             <div class="form-section">
               <h2>Datos del Cliente</h2>
               <div class="form-grid">
@@ -179,8 +200,8 @@
               </div>
             </div>
 
-            <!-- Datos de la Factura -->
-            <div class="form-section">
+            <!-- Datos de la Factura (solo Factura) -->
+            <div class="form-section" id="facturaDatosSection">
               <h2>Datos de la Factura</h2>
               <div class="form-grid">
                 <label class="field">
@@ -207,8 +228,64 @@
               </div>
             </div>
 
-            <!-- Líneas de Factura -->
-            <div class="form-section">
+            <!-- Datos de la Nota (solo Notas) -->
+            <div class="form-section" id="notaDatosSection" style="display: none;">
+              <h2>Datos de la Nota</h2>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Prefijo *</span>
+                  <input type="text" id="notaPrefijo" placeholder="NC" maxlength="10">
+                </label>
+                <label class="field">
+                  <span>Consecutivo *</span>
+                  <input type="number" id="notaConsecutivo" placeholder="1" min="1">
+                </label>
+                <label class="field">
+                  <span>Fecha de Emisión *</span>
+                  <input type="datetime-local" id="notaFecha">
+                </label>
+                <label class="field">
+                  <span>Estado DIAN *</span>
+                  <select id="notaEstado">
+                    <option value="BORRADOR">Borrador</option>
+                    <option value="ENVIADA">Enviada</option>
+                    <option value="VALIDADA">Validada</option>
+                    <option value="RECHAZADA">Rechazada</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <!-- Datos del Documento Soporte (solo Documentos Soporte) -->
+            <div class="form-section" id="documentoSoporteDatosSection" style="display: none;">
+              <h2>Datos del Documento Soporte</h2>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Prefijo *</span>
+                  <input type="text" id="documentoSoportePrefijo" placeholder="DS" maxlength="10">
+                </label>
+                <label class="field">
+                  <span>Consecutivo *</span>
+                  <input type="number" id="documentoSoporteConsecutivo" placeholder="1" min="1">
+                </label>
+                <label class="field">
+                  <span>Fecha de Emisión *</span>
+                  <input type="datetime-local" id="documentoSoporteFecha">
+                </label>
+                <label class="field">
+                  <span>Estado DIAN *</span>
+                  <select id="documentoSoporteEstado">
+                    <option value="BORRADOR">Borrador</option>
+                    <option value="ENVIADA">Enviada</option>
+                    <option value="VALIDADA">Validada</option>
+                    <option value="RECHAZADA">Rechazada</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <!-- Líneas de Factura (solo Factura) -->
+            <div class="form-section" id="lineasSection">
               <h2>Productos y Servicios</h2>
               <div class="lineas-container">
                 <div class="linea-header">

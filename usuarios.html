@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ADS Factura — Resoluciones de Numeración</title>
-    <meta name="description" content="Gestiona las resoluciones de numeración para facturación electrónica">
+    <title>ADS Factura — Usuarios</title>
+    <meta name="description" content="Gestiona usuarios del sistema">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   </head>
-  <body class="resoluciones-numeracion-page">
+  <body class="usuarios-page">
     <header class="site-header">
       <div class="container header-inner">
         <div class="brand">
@@ -68,7 +68,7 @@
           </div>
           <div class="submenu">
             <a class="submenu-item" href="datos-empresa.html">Datos de la Empresa</a>
-            <a class="submenu-item active" href="resoluciones-numeracion.html">Resoluciones de Numeración</a>
+            <a class="submenu-item" href="resoluciones-numeracion.html">Resoluciones de Numeración</a>
             <a class="submenu-item" href="certificados-digitales.html">Certificados Digitales</a>
             <a class="submenu-item" href="clientes.html">Clientes</a>
             <a class="submenu-item" href="productos-servicios.html">Productos/Servicios</a>
@@ -81,7 +81,7 @@
             <span class="menu-arrow">▼</span>
           </div>
           <div class="submenu">
-            <a class="submenu-item" href="usuarios.html">Usuarios</a>
+            <a class="submenu-item active" href="usuarios.html">Usuarios</a>
             <a class="submenu-item" href="perfiles.html">Perfiles</a>
             <a class="submenu-item" href="roles-permisos.html">Roles y Permisos</a>
           </div>
@@ -118,124 +118,101 @@
     <div class="menu-overlay" id="menuOverlay"></div>
 
     <main>
-      <section class="factura-section">
+      <section class="usuarios-section">
         <div class="container">
-          <div class="factura-header">
-            <h1>Resoluciones de Numeración</h1>
-            <p class="muted">Gestiona las resoluciones autorizadas por la DIAN para la numeración de facturas</p>
+          <div class="section-header">
+            <div>
+              <h1>Gestión de Usuarios</h1>
+              <p class="muted">Administra los usuarios del sistema y sus accesos</p>
+            </div>
+            <button class="btn btn-primary" id="btnNuevoUsuario">
+              <i class="fas fa-plus"></i> Nuevo Usuario
+            </button>
           </div>
 
-          <!-- Lista de Resoluciones -->
-          <div class="form-section">
-            <div class="section-header">
-              <h2>Resoluciones Registradas</h2>
-              <button type="button" class="btn btn-primary" id="btnNuevaResolucion">
-                + Nueva Resolución
-              </button>
-            </div>
-            
-            <div class="resoluciones-list" id="resolucionesList">
-              <!-- Las resoluciones se cargarán dinámicamente -->
-            </div>
+          <!-- Lista de Usuarios -->
+          <div class="usuarios-list" id="usuariosList">
+            <!-- Los usuarios se cargarán dinámicamente -->
           </div>
 
-          <!-- Formulario de Nueva Resolución (oculto por defecto) -->
-          <form class="factura-form" id="resolucionForm" style="display: none;">
-            <div class="form-section">
-              <h2>Nueva Resolución de Numeración</h2>
+          <!-- Formulario de Usuario (oculto por defecto) -->
+          <div class="form-section" id="usuarioFormSection" style="display: none;">
+            <h2 id="usuarioFormTitle">Nuevo Usuario</h2>
+            <form class="usuario-form" id="usuarioForm">
               <div class="form-grid">
                 <label class="field">
                   <span>Empresa *</span>
-                  <select id="resolucionEmpresa" required>
+                  <select id="usuarioEmpresa" required>
                     <option value="">Seleccionar empresa</option>
-                    <option value="1">EMPRESA DEMO S.A.S. (900123456-7)</option>
-                    <option value="2">OTRA EMPRESA LTDA. (800987654-3)</option>
+                    <option value="1">EMPRESA DEMO S.A.S.</option>
+                    <option value="2">OTRA EMPRESA LTDA.</option>
                   </select>
-                  <small class="field-help">Empresa a la que pertenece la resolución</small>
                 </label>
                 <label class="field">
-                  <span>Prefijo *</span>
-                  <input type="text" id="resolucionPrefijo" placeholder="FE" maxlength="10" required>
-                  <small class="field-help">Prefijo autorizado por la DIAN</small>
+                  <span>Username *</span>
+                  <input type="text" id="usuarioUsername" placeholder="juan.perez" required>
+                  <small class="field-help">Nombre de usuario único para el sistema</small>
                 </label>
                 <label class="field">
-                  <span>Rango Inicial *</span>
-                  <input type="number" id="resolucionRangoInicial" placeholder="1" min="1" required>
-                  <small class="field-help">Número inicial del rango autorizado</small>
+                  <span>Email *</span>
+                  <input type="email" id="usuarioEmail" placeholder="juan.perez@empresa.com" required>
                 </label>
                 <label class="field">
-                  <span>Rango Final *</span>
-                  <input type="number" id="resolucionRangoFinal" placeholder="1000" min="1" required>
-                  <small class="field-help">Número final del rango autorizado</small>
-                </label>
-              </div>
-            </div>
-
-            <div class="form-section">
-              <h2>Vigencia de la Resolución</h2>
-              <div class="form-grid">
-                <label class="field">
-                  <span>Fecha de Inicio *</span>
-                  <input type="date" id="resolucionFechaInicio" required>
-                  <small class="field-help">Fecha desde la cual es válida la resolución</small>
+                  <span>Contraseña *</span>
+                  <input type="password" id="usuarioPassword" placeholder="••••••••" required>
+                  <small class="field-help">Mínimo 8 caracteres</small>
                 </label>
                 <label class="field">
-                  <span>Fecha de Fin *</span>
-                  <input type="date" id="resolucionFechaFin" required>
-                  <small class="field-help">Fecha hasta la cual es válida la resolución</small>
+                  <span>Confirmar Contraseña *</span>
+                  <input type="password" id="usuarioPasswordConfirm" placeholder="••••••••" required>
                 </label>
                 <label class="field">
                   <span>Estado *</span>
-                  <select id="resolucionEstado" required>
-                    <option value="">Seleccionar estado</option>
-                    <option value="ACTIVA">Activa</option>
-                    <option value="INACTIVA">Inactiva</option>
-                    <option value="VENCIDA">Vencida</option>
-                    <option value="SUSPENDIDA">Suspendida</option>
+                  <select id="usuarioEstado" required>
+                    <option value="ACTIVO">Activo</option>
+                    <option value="INACTIVO">Inactivo</option>
+                    <option value="SUSPENDIDO">Suspendido</option>
                   </select>
-                  <small class="field-help">Estado actual de la resolución</small>
-                </label>
-                <label class="field">
-                  <span>Número de Resolución DIAN</span>
-                  <input type="text" id="resolucionNumeroDIAN" placeholder="RES-00000001">
-                  <small class="field-help">Número de resolución asignado por la DIAN</small>
                 </label>
               </div>
-            </div>
 
-            <div class="form-section">
-              <h2>Información Adicional</h2>
-              <div class="form-grid">
-                <label class="field">
-                  <span>Tipo de Documento</span>
-                  <select id="resolucionTipoDocumento">
-                    <option value="FACTURA">Factura</option>
-                    <option value="NOTA_CREDITO">Nota Crédito</option>
-                    <option value="NOTA_DEBITO">Nota Débito</option>
-                    <option value="DOCUMENTO_SOPORTE">Documento Soporte</option>
-                  </select>
-                  <small class="field-help">Tipo de documento que autoriza la resolución</small>
-                </label>
-                <label class="field">
-                  <span>Descripción</span>
-                  <input type="text" id="resolucionDescripcion" placeholder="Resolución para facturación electrónica">
-                  <small class="field-help">Descripción opcional de la resolución</small>
-                </label>
-                <label class="field">
-                  <span>Observaciones</span>
-                  <textarea id="resolucionObservaciones" rows="3" placeholder="Observaciones adicionales sobre la resolución"></textarea>
-                  <small class="field-help">Observaciones o notas sobre la resolución</small>
-                </label>
+              <!-- Información del Perfil -->
+              <div class="form-section" style="margin-top: 24px;">
+                <h3>Información del Perfil</h3>
+                <div class="form-grid">
+                  <label class="field">
+                    <span>Nombre</span>
+                    <input type="text" id="perfilNombre" placeholder="Juan">
+                  </label>
+                  <label class="field">
+                    <span>Apellido</span>
+                    <input type="text" id="perfilApellido" placeholder="Pérez">
+                  </label>
+                  <label class="field">
+                    <span>Teléfono</span>
+                    <input type="tel" id="perfilTelefono" placeholder="+57 300 123 4567">
+                  </label>
+                  <label class="field">
+                    <span>Cargo</span>
+                    <input type="text" id="perfilCargo" placeholder="Analista de Facturación">
+                  </label>
+                </div>
               </div>
-            </div>
 
-            <!-- Acciones -->
-            <div class="form-actions">
-              <button type="button" class="btn btn-outline" id="btnCancelarResolucion">Cancelar</button>
-              <button type="button" class="btn btn-secondary" id="btnGuardarBorradorResolucion">Guardar Borrador</button>
-              <button type="submit" class="btn btn-primary">Guardar Resolución</button>
-            </div>
-          </form>
+              <!-- Roles Asignados -->
+              <div class="form-section" style="margin-top: 24px;">
+                <h3>Roles Asignados</h3>
+                <div class="roles-grid" id="rolesGrid">
+                  <!-- Los roles se cargarán dinámicamente -->
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-outline" id="btnCancelarUsuario">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar Usuario</button>
+              </div>
+            </form>
+          </div>
         </div>
       </section>
     </main>
@@ -251,6 +228,6 @@
     </footer>
 
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/resoluciones.js"></script>
+    <script src="assets/js/usuarios.js"></script>
   </body>
 </html>

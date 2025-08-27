@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ADS Factura — Productos y Servicios</title>
+    <meta name="description" content="Gestiona los productos y servicios para facturación electrónica">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  </head>
+  <body class="productos-servicios-page">
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <i class="fas fa-file-invoice-dollar fa-lg text-white me-2"></i>
+          <span class="brand-name">ADS Factura</span>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Menú hamburguesa -->
+    <nav class="hamburger-menu" id="hamburgerMenu">
+      <div class="hamburger-header">
+        <div class="brand">
+          <i class="fas fa-file-invoice-dollar fa-lg text-white me-2"></i>
+          <span class="brand-name">ADS Factura</span>
+        </div>
+        <button class="close-menu" id="closeMenu" aria-label="Cerrar menú">
+          <span></span><span></span>
+        </button>
+      </div>
+      
+      <div class="menu-content">
+        <div class="menu-section">
+          <a class="menu-item" href="index.html">
+            <span class="menu-text">Home</span>
+          </a>
+          <a class="menu-item" href="login.html">
+            <span class="menu-text">Login</span>
+          </a>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Documentos</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="crear-factura.html">Crear Factura</a>
+            <a class="submenu-item" href="#">Notas Crédito</a>
+            <a class="submenu-item" href="#">Notas Débito</a>
+            <a class="submenu-item" href="#">Documentos Soporte</a>
+            <a class="submenu-item" href="#">Eventos de Factura</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Configuración</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="datos-empresa.html">Datos de la Empresa</a>
+            <a class="submenu-item" href="resoluciones-numeracion.html">Resoluciones de Numeración</a>
+            <a class="submenu-item" href="certificados-digitales.html">Certificados Digitales</a>
+            <a class="submenu-item" href="clientes.html">Clientes</a>
+            <a class="submenu-item active" href="productos-servicios.html">Productos/Servicios</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Usuarios y Seguridad</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="usuarios.html">Usuarios</a>
+            <a class="submenu-item" href="perfiles.html">Perfiles</a>
+            <a class="submenu-item" href="roles-permisos.html">Roles y Permisos</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Consultas y Reportes</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="#">Estado de Documentos</a>
+            <a class="submenu-item" href="#">Histórico de Documentos</a>
+            <a class="submenu-item" href="#">Estadísticas de Facturación</a>
+            <a class="submenu-item" href="#">Log de Envíos DIAN</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Overlay para cerrar el menú -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main>
+      <section class="factura-section">
+        <div class="container">
+          <div class="factura-header">
+            <h1>Productos/Servicios</h1>
+            <p class="muted">Administra productos y servicios ofertados a tus clientes</p>
+          </div>
+
+          <!-- Lista de Productos/Servicios -->
+          <div class="form-section">
+            <div class="section-header">
+              <h2>Catálogo</h2>
+              <button type="button" class="btn btn-primary" id="btnNuevoProducto">
+                + Nuevo
+              </button>
+            </div>
+            
+            <div class="resoluciones-list" id="productosList">
+              <!-- Los productos/servicios se cargarán dinámicamente -->
+            </div>
+          </div>
+
+          <!-- Formulario de Nuevo Producto/Servicio (oculto por defecto) -->
+          <form class="factura-form" id="productoForm" style="display: none;">
+            <div class="form-section">
+              <h2>Datos del Ítem</h2>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Tipo *</span>
+                  <select id="prodTipo" required>
+                    <option value="">Seleccionar</option>
+                    <option value="PRODUCTO">Producto</option>
+                    <option value="SERVICIO">Servicio</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>Nombre *</span>
+                  <input type="text" id="prodNombre" placeholder="Licencia de software" required>
+                </label>
+                <label class="field">
+                  <span>Descripción</span>
+                  <input type="text" id="prodDescripcion" placeholder="Soporte anual, 1 usuario">
+                </label>
+                <label class="field">
+                  <span>Precio Unitario *</span>
+                  <input type="number" id="prodPrecio" placeholder="0.00" min="0" step="0.01" required>
+                </label>
+                <label class="field">
+                  <span>Impuestos</span>
+                  <input type="number" id="prodImpuestos" placeholder="0.00" min="0" step="0.01">
+                  <small class="field-help">Valor de impuestos por unidad (IVA, etc.)</small>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-outline" id="btnCancelarProducto">Cancelar</button>
+              <button type="button" class="btn btn-secondary" id="btnGuardarBorradorProducto">Guardar Borrador</button>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span>© <span id="year"></span> ADS Factura</span>
+        <nav class="footer-nav">
+          <a href="#">Términos</a>
+          <a href="#">Privacidad</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/productos.js"></script>
+  </body>
+</html>
+
+

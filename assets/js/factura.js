@@ -1,6 +1,16 @@
 (() => {
   let lineasFactura = [];
   let contadorLineas = 0;
+  const docTipo = document.getElementById('docTipo');
+  const docFacturaRelacionadaField = document.getElementById('docFacturaRelacionadaField');
+  const docFacturaRelacionada = document.getElementById('docFacturaRelacionada');
+  const facturaDatosSection = document.getElementById('facturaDatosSection');
+  const notaDatosSection = document.getElementById('notaDatosSection');
+  const documentoSoporteDatosSection = document.getElementById('documentoSoporteDatosSection');
+  const lineasSection = document.getElementById('lineasSection');
+  const facturaDatosTitle = facturaDatosSection?.querySelector('h2');
+  const notaDatosTitle = notaDatosSection?.querySelector('h2');
+  const pageTitleEl = document.querySelector('.factura-header h1');
 
   // Elementos del DOM
   const facturaForm = document.getElementById('facturaForm');
@@ -18,6 +28,71 @@
     const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
     fechaInput.value = localDateTime;
   }
+
+  // Establecer fecha default de Nota
+  const notaFecha = document.getElementById('notaFecha');
+  if (notaFecha) {
+    const now = new Date();
+    const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    notaFecha.value = local;
+  }
+
+  // Configurar fecha por defecto para Documento Soporte
+  const documentoSoporteFecha = document.getElementById('documentoSoporteFecha');
+  if (documentoSoporteFecha) {
+    const now = new Date();
+    const local = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+    documentoSoporteFecha.value = local;
+  }
+
+  // Poblar facturas relacionadas (mock)
+  if (docFacturaRelacionada) {
+    const facturasMock = [
+      { id: 1, etiqueta: 'FE-1001 — EMPRESA DEMO / CLIENTE PRUEBA' }
+    ];
+    docFacturaRelacionada.innerHTML = '<option value="">Sin selección</option>' + facturasMock.map(f => `<option value="${f.id}">${f.etiqueta}</option>`).join('');
+  }
+
+  function actualizarUIporTipo() {
+    const tipo = docTipo?.value || 'FACTURA';
+    const esFactura = tipo === 'FACTURA';
+    const esNota = tipo === 'NOTA_CREDITO' || tipo === 'NOTA_DEBITO';
+    const esDocumentoSoporte = tipo === 'DOCUMENTO_SOPORTE';
+    
+    // Ocultar todas las secciones primero
+    facturaDatosSection.style.display = 'none';
+    notaDatosSection.style.display = 'none';
+    documentoSoporteDatosSection.style.display = 'none';
+    
+    // Mostrar la sección correspondiente
+    if (esFactura) {
+      facturaDatosSection.style.display = '';
+    } else if (esNota) {
+      notaDatosSection.style.display = '';
+    } else if (esDocumentoSoporte) {
+      documentoSoporteDatosSection.style.display = '';
+    }
+    
+    // Mostrar líneas para todos los tipos
+    lineasSection.style.display = '';
+    
+    // Mostrar campo de factura relacionada solo para notas
+    docFacturaRelacionadaField.style.display = esNota ? '' : 'none';
+
+    // Ajustar títulos según el tipo
+    if (esFactura) {
+      if (facturaDatosTitle) facturaDatosTitle.textContent = 'Datos de la Factura';
+      if (pageTitleEl) pageTitleEl.textContent = 'Crear Factura Electrónica';
+    } else if (esNota) {
+      if (notaDatosTitle) notaDatosTitle.textContent = (tipo === 'NOTA_CREDITO') ? 'Datos de la Nota Crédito' : 'Datos de la Nota Débito';
+      if (pageTitleEl) pageTitleEl.textContent = (tipo === 'NOTA_CREDITO') ? 'Crear Nota Crédito' : 'Crear Nota Débito';
+    } else if (esDocumentoSoporte) {
+      if (pageTitleEl) pageTitleEl.textContent = 'Crear Documento Soporte';
+    }
+  }
+
+  docTipo?.addEventListener('change', actualizarUIporTipo);
+  actualizarUIporTipo();
 
   // Función para crear una nueva línea de factura
   function crearLinea() {
@@ -121,23 +196,43 @@
 
   // Función para validar el formulario
   function validarFormulario() {
-    const requiredFields = facturaForm.querySelectorAll('[required]');
+    const tipo = docTipo?.value || 'FACTURA';
     let isValid = true;
-    
-    requiredFields.forEach(field => {
-      if (!field.value.trim()) {
-        field.style.borderColor = '#ef4444';
-        isValid = false;
-      } else {
-        field.style.borderColor = '';
+    if (tipo === 'FACTURA') {
+      const requiredFields = facturaForm.querySelectorAll('[required]');
+      requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+          field.style.borderColor = '#ef4444';
+          isValid = false;
+        } else {
+          field.style.borderColor = '';
+        }
+      });
+      if (lineasFactura.length === 0) {
+        alert('Debes agregar al menos una línea de producto.');
+        return false;
       }
-    });
-    
-    if (lineasFactura.length === 0) {
-      alert('Debes agregar al menos una línea de producto.');
-      return false;
+    } else if (tipo === 'NOTA_CREDITO' || tipo === 'NOTA_DEBITO') {
+      // Validación para notas (mismos campos que factura)
+      const prefijo = document.getElementById('notaPrefijo')?.value.trim();
+      const consecutivo = document.getElementById('notaConsecutivo')?.value;
+      const fecha = document.getElementById('notaFecha')?.value;
+      const estado = document.getElementById('notaEstado')?.value;
+      if (!prefijo) { alert('El prefijo es obligatorio.'); return false; }
+      if (!consecutivo) { alert('El consecutivo es obligatorio.'); return false; }
+      if (!fecha) { alert('La fecha de emisión es obligatoria.'); return false; }
+      if (!estado) { alert('El estado DIAN es obligatorio.'); return false; }
+    } else if (tipo === 'DOCUMENTO_SOPORTE') {
+      // Validación para documentos soporte (mismos campos que factura)
+      const prefijo = document.getElementById('documentoSoportePrefijo')?.value.trim();
+      const consecutivo = document.getElementById('documentoSoporteConsecutivo')?.value;
+      const fecha = document.getElementById('documentoSoporteFecha')?.value;
+      const estado = document.getElementById('documentoSoporteEstado')?.value;
+      if (!prefijo) { alert('El prefijo es obligatorio.'); return false; }
+      if (!consecutivo) { alert('El consecutivo es obligatorio.'); return false; }
+      if (!fecha) { alert('La fecha de emisión es obligatoria.'); return false; }
+      if (!estado) { alert('El estado DIAN es obligatorio.'); return false; }
     }
-    
     return isValid;
   }
 
@@ -196,24 +291,50 @@
   facturaForm?.addEventListener('submit', (ev) => {
     ev.preventDefault();
     
-    if (validarFormulario()) {
+    if (!validarFormulario()) return;
+    const tipo = docTipo?.value || 'FACTURA';
+    const submitButton = facturaForm.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.textContent = 'Procesando...';
+    if (tipo === 'FACTURA') {
       const datos = obtenerDatosFactura();
-      
-      // Simulación de envío a DIAN
-      const submitButton = facturaForm.querySelector('button[type="submit"]');
-      submitButton.disabled = true;
-      submitButton.textContent = 'Enviando a DIAN...';
-      
       setTimeout(() => {
         submitButton.disabled = false;
         submitButton.textContent = 'Crear y Enviar a DIAN';
         alert('Factura creada y enviada a DIAN exitosamente.');
         console.log('Datos de la factura:', datos);
-        
-        // Generar CUFE simulado
         const cufe = `CUFE${Date.now()}${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
         alert(`CUFE generado: ${cufe}`);
       }, 2000);
+    } else if (tipo === 'NOTA_CREDITO' || tipo === 'NOTA_DEBITO') {
+      const datosNota = {
+        tipo,
+        factura_id: docFacturaRelacionada?.value ? parseInt(docFacturaRelacionada.value) : null,
+        prefijo: document.getElementById('notaPrefijo')?.value.trim(),
+        consecutivo: document.getElementById('notaConsecutivo')?.value,
+        fecha_emision: document.getElementById('notaFecha')?.value,
+        estado_dian: document.getElementById('notaEstado')?.value
+      };
+      setTimeout(() => {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Crear y Enviar a DIAN';
+        alert(`${tipo === 'NOTA_CREDITO' ? 'Nota crédito' : 'Nota débito'} creada exitosamente.`);
+        console.log('Datos de la nota:', datosNota);
+      }, 1500);
+    } else if (tipo === 'DOCUMENTO_SOPORTE') {
+      const datosDocumentoSoporte = {
+        tipo,
+        prefijo: document.getElementById('documentoSoportePrefijo')?.value.trim(),
+        consecutivo: document.getElementById('documentoSoporteConsecutivo')?.value,
+        fecha_emision: document.getElementById('documentoSoporteFecha')?.value,
+        estado_dian: document.getElementById('documentoSoporteEstado')?.value
+      };
+      setTimeout(() => {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Crear y Enviar a DIAN';
+        alert('Documento Soporte creado exitosamente.');
+        console.log('Datos del documento soporte:', datosDocumentoSoporte);
+      }, 1500);
     }
   });
 

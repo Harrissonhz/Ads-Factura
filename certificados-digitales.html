@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ADS Factura — Resoluciones de Numeración</title>
-    <meta name="description" content="Gestiona las resoluciones de numeración para facturación electrónica">
+    <title>ADS Factura — Certificados Digitales</title>
+    <meta name="description" content="Gestiona los certificados digitales por empresa">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   </head>
-  <body class="resoluciones-numeracion-page">
+  <body class="certificados-digitales-page">
     <header class="site-header">
       <div class="container header-inner">
         <div class="brand">
@@ -68,10 +68,10 @@
           </div>
           <div class="submenu">
             <a class="submenu-item" href="datos-empresa.html">Datos de la Empresa</a>
-            <a class="submenu-item active" href="resoluciones-numeracion.html">Resoluciones de Numeración</a>
-            <a class="submenu-item" href="certificados-digitales.html">Certificados Digitales</a>
-            <a class="submenu-item" href="clientes.html">Clientes</a>
-            <a class="submenu-item" href="productos-servicios.html">Productos/Servicios</a>
+            <a class="submenu-item" href="resoluciones-numeracion.html">Resoluciones de Numeración</a>
+            <a class="submenu-item active" href="certificados-digitales.html">Certificados Digitales</a>
+            <a class="submenu-item" href="#">Clientes</a>
+            <a class="submenu-item" href="#">Productos/Servicios</a>
           </div>
         </div>
 
@@ -99,18 +99,6 @@
             <a class="submenu-item" href="#">Log de Envíos DIAN</a>
           </div>
         </div>
-
-        <div class="menu-section">
-          <div class="menu-category">
-            <span class="menu-text">Soporte</span>
-            <span class="menu-arrow">▼</span>
-          </div>
-          <div class="submenu">
-            <a class="submenu-item" href="#">Prueba de Conexión DIAN</a>
-            <a class="submenu-item" href="#">Monitor de Procesos</a>
-            <a class="submenu-item" href="#">Auditoría de Usuarios</a>
-          </div>
-        </div>
       </div>
     </nav>
 
@@ -121,119 +109,74 @@
       <section class="factura-section">
         <div class="container">
           <div class="factura-header">
-            <h1>Resoluciones de Numeración</h1>
-            <p class="muted">Gestiona las resoluciones autorizadas por la DIAN para la numeración de facturas</p>
+            <h1>Certificados Digitales</h1>
+            <p class="muted">Administra los certificados digitales asociados a cada empresa</p>
           </div>
 
-          <!-- Lista de Resoluciones -->
+          <!-- Lista de Certificados -->
           <div class="form-section">
             <div class="section-header">
-              <h2>Resoluciones Registradas</h2>
-              <button type="button" class="btn btn-primary" id="btnNuevaResolucion">
-                + Nueva Resolución
+              <h2>Certificados Registrados</h2>
+              <button type="button" class="btn btn-primary" id="btnNuevoCertificado">
+                + Nuevo Certificado
               </button>
             </div>
             
-            <div class="resoluciones-list" id="resolucionesList">
-              <!-- Las resoluciones se cargarán dinámicamente -->
+            <div class="resoluciones-list" id="certificadosList">
+              <!-- Los certificados se cargarán dinámicamente -->
             </div>
           </div>
 
-          <!-- Formulario de Nueva Resolución (oculto por defecto) -->
-          <form class="factura-form" id="resolucionForm" style="display: none;">
+          <!-- Formulario de Nuevo Certificado (oculto por defecto) -->
+          <form class="factura-form" id="certificadoForm" style="display: none;">
             <div class="form-section">
-              <h2>Nueva Resolución de Numeración</h2>
+              <h2>Nuevo Certificado Digital</h2>
               <div class="form-grid">
                 <label class="field">
                   <span>Empresa *</span>
-                  <select id="resolucionEmpresa" required>
+                  <select id="certEmpresa" required>
                     <option value="">Seleccionar empresa</option>
                     <option value="1">EMPRESA DEMO S.A.S. (900123456-7)</option>
                     <option value="2">OTRA EMPRESA LTDA. (800987654-3)</option>
                   </select>
-                  <small class="field-help">Empresa a la que pertenece la resolución</small>
+                  <small class="field-help">Empresa a la que pertenece el certificado</small>
                 </label>
                 <label class="field">
-                  <span>Prefijo *</span>
-                  <input type="text" id="resolucionPrefijo" placeholder="FE" maxlength="10" required>
-                  <small class="field-help">Prefijo autorizado por la DIAN</small>
+                  <span>Nombre del Certificado *</span>
+                  <input type="text" id="certNombre" placeholder="Certificado Producción" required>
+                  <small class="field-help">Nombre identificador interno</small>
                 </label>
                 <label class="field">
-                  <span>Rango Inicial *</span>
-                  <input type="number" id="resolucionRangoInicial" placeholder="1" min="1" required>
-                  <small class="field-help">Número inicial del rango autorizado</small>
+                  <span>Serie *</span>
+                  <input type="text" id="certSerie" placeholder="SERIE12345" required>
+                  <small class="field-help">Serie del certificado</small>
                 </label>
                 <label class="field">
-                  <span>Rango Final *</span>
-                  <input type="number" id="resolucionRangoFinal" placeholder="1000" min="1" required>
-                  <small class="field-help">Número final del rango autorizado</small>
+                  <span>Ubicación *</span>
+                  <input type="text" id="certUbicacion" placeholder="/certs/empresa_demo.pfx" required>
+                  <small class="field-help">Ruta o referencia de almacenamiento</small>
                 </label>
               </div>
             </div>
 
             <div class="form-section">
-              <h2>Vigencia de la Resolución</h2>
+              <h2>Vigencia</h2>
               <div class="form-grid">
                 <label class="field">
                   <span>Fecha de Inicio *</span>
-                  <input type="date" id="resolucionFechaInicio" required>
-                  <small class="field-help">Fecha desde la cual es válida la resolución</small>
+                  <input type="date" id="certFechaInicio" required>
                 </label>
                 <label class="field">
                   <span>Fecha de Fin *</span>
-                  <input type="date" id="resolucionFechaFin" required>
-                  <small class="field-help">Fecha hasta la cual es válida la resolución</small>
-                </label>
-                <label class="field">
-                  <span>Estado *</span>
-                  <select id="resolucionEstado" required>
-                    <option value="">Seleccionar estado</option>
-                    <option value="ACTIVA">Activa</option>
-                    <option value="INACTIVA">Inactiva</option>
-                    <option value="VENCIDA">Vencida</option>
-                    <option value="SUSPENDIDA">Suspendida</option>
-                  </select>
-                  <small class="field-help">Estado actual de la resolución</small>
-                </label>
-                <label class="field">
-                  <span>Número de Resolución DIAN</span>
-                  <input type="text" id="resolucionNumeroDIAN" placeholder="RES-00000001">
-                  <small class="field-help">Número de resolución asignado por la DIAN</small>
+                  <input type="date" id="certFechaFin" required>
                 </label>
               </div>
             </div>
 
-            <div class="form-section">
-              <h2>Información Adicional</h2>
-              <div class="form-grid">
-                <label class="field">
-                  <span>Tipo de Documento</span>
-                  <select id="resolucionTipoDocumento">
-                    <option value="FACTURA">Factura</option>
-                    <option value="NOTA_CREDITO">Nota Crédito</option>
-                    <option value="NOTA_DEBITO">Nota Débito</option>
-                    <option value="DOCUMENTO_SOPORTE">Documento Soporte</option>
-                  </select>
-                  <small class="field-help">Tipo de documento que autoriza la resolución</small>
-                </label>
-                <label class="field">
-                  <span>Descripción</span>
-                  <input type="text" id="resolucionDescripcion" placeholder="Resolución para facturación electrónica">
-                  <small class="field-help">Descripción opcional de la resolución</small>
-                </label>
-                <label class="field">
-                  <span>Observaciones</span>
-                  <textarea id="resolucionObservaciones" rows="3" placeholder="Observaciones adicionales sobre la resolución"></textarea>
-                  <small class="field-help">Observaciones o notas sobre la resolución</small>
-                </label>
-              </div>
-            </div>
-
-            <!-- Acciones -->
             <div class="form-actions">
-              <button type="button" class="btn btn-outline" id="btnCancelarResolucion">Cancelar</button>
-              <button type="button" class="btn btn-secondary" id="btnGuardarBorradorResolucion">Guardar Borrador</button>
-              <button type="submit" class="btn btn-primary">Guardar Resolución</button>
+              <button type="button" class="btn btn-outline" id="btnCancelarCertificado">Cancelar</button>
+              <button type="button" class="btn btn-secondary" id="btnGuardarBorradorCert">Guardar Borrador</button>
+              <button type="submit" class="btn btn-primary">Guardar Certificado</button>
             </div>
           </form>
         </div>
@@ -251,6 +194,8 @@
     </footer>
 
     <script src="assets/js/main.js"></script>
-    <script src="assets/js/resoluciones.js"></script>
+    <script src="assets/js/certificados.js"></script>
   </body>
 </html>
+
+

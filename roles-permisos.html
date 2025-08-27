@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ADS Factura — Roles y Permisos</title>
+    <meta name="description" content="Gestiona roles y permisos del sistema">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  </head>
+  <body class="roles-permisos-page">
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <i class="fas fa-file-invoice-dollar fa-lg text-white me-2"></i>
+          <span class="brand-name">ADS Factura</span>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Menú hamburguesa -->
+    <nav class="hamburger-menu" id="hamburgerMenu">
+      <div class="hamburger-header">
+        <div class="brand">
+          <i class="fas fa-file-invoice-dollar fa-lg text-white me-2"></i>
+          <span class="brand-name">ADS Factura</span>
+        </div>
+        <button class="close-menu" id="closeMenu" aria-label="Cerrar menú">
+          <span></span><span></span>
+        </button>
+      </div>
+      
+      <div class="menu-content">
+        <div class="menu-section">
+          <a class="menu-item" href="index.html">
+            <span class="menu-text">Home</span>
+          </a>
+          <a class="menu-item" href="login.html">
+            <span class="menu-text">Login</span>
+          </a>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Documentos</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="crear-factura.html">Crear Factura</a>
+            <a class="submenu-item" href="#">Notas Crédito</a>
+            <a class="submenu-item" href="#">Notas Débito</a>
+            <a class="submenu-item" href="#">Documentos Soporte</a>
+            <a class="submenu-item" href="#">Eventos de Factura</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Configuración</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="datos-empresa.html">Datos de la Empresa</a>
+            <a class="submenu-item" href="resoluciones-numeracion.html">Resoluciones de Numeración</a>
+            <a class="submenu-item" href="certificados-digitales.html">Certificados Digitales</a>
+            <a class="submenu-item" href="clientes.html">Clientes</a>
+            <a class="submenu-item" href="productos-servicios.html">Productos/Servicios</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Usuarios y Seguridad</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="usuarios.html">Usuarios</a>
+            <a class="submenu-item" href="perfiles.html">Perfiles</a>
+            <a class="submenu-item active" href="roles-permisos.html">Roles y Permisos</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Consultas y Reportes</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="#">Estado de Documentos</a>
+            <a class="submenu-item" href="#">Histórico de Documentos</a>
+            <a class="submenu-item" href="#">Estadísticas de Facturación</a>
+            <a class="submenu-item" href="#">Log de Envíos DIAN</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Soporte</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="#">Prueba de Conexión DIAN</a>
+            <a class="submenu-item" href="#">Monitor de Procesos</a>
+            <a class="submenu-item" href="#">Auditoría de Usuarios</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Overlay para cerrar el menú -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main>
+      <section class="roles-permisos-section">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <h1>Gestión de Roles y Permisos</h1>
+              <p class="muted">Administra los roles del sistema y sus permisos asociados</p>
+            </div>
+            <div class="header-actions">
+              <button class="btn btn-secondary" id="btnNuevoRol">
+                <i class="fas fa-plus"></i> Nuevo Rol
+              </button>
+              <button class="btn btn-primary" id="btnNuevoPermiso">
+                <i class="fas fa-shield-alt"></i> Nuevo Permiso
+              </button>
+            </div>
+          </div>
+
+          <!-- Tabs de navegación -->
+          <div class="tabs-container">
+            <button class="tab-button active" data-tab="roles">
+              <i class="fas fa-users"></i> Roles
+            </button>
+            <button class="tab-button" data-tab="permisos">
+              <i class="fas fa-shield-alt"></i> Permisos
+            </button>
+          </div>
+
+          <!-- Contenido de Roles -->
+          <div class="tab-content active" id="rolesTab">
+            <div class="roles-list" id="rolesList">
+              <!-- Los roles se cargarán dinámicamente -->
+            </div>
+
+            <!-- Formulario de Rol (oculto por defecto) -->
+            <div class="form-section" id="rolFormSection" style="display: none;">
+              <h2 id="rolFormTitle">Nuevo Rol</h2>
+              <form class="rol-form" id="rolForm">
+                <div class="form-grid">
+                  <label class="field">
+                    <span>Nombre del Rol *</span>
+                    <input type="text" id="rolNombre" placeholder="ADMIN" required>
+                    <small class="field-help">Nombre único del rol (ej: ADMIN, FACTURADOR)</small>
+                  </label>
+                  <label class="field">
+                    <span>Descripción *</span>
+                    <textarea id="rolDescripcion" rows="3" placeholder="Descripción detallada del rol y sus responsabilidades" required></textarea>
+                  </label>
+                  <label class="field">
+                    <span>Nivel de Acceso</span>
+                    <select id="rolNivelAcceso">
+                      <option value="BAJO">Bajo</option>
+                      <option value="MEDIO">Medio</option>
+                      <option value="ALTO">Alto</option>
+                      <option value="ADMINISTRATIVO">Administrativo</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span>Estado</span>
+                    <select id="rolEstado">
+                      <option value="ACTIVO">Activo</option>
+                      <option value="INACTIVO">Inactivo</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="form-actions">
+                  <button type="button" class="btn btn-outline" id="btnCancelarRol">Cancelar</button>
+                  <button type="submit" class="btn btn-primary">Guardar Rol</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Contenido de Permisos -->
+          <div class="tab-content" id="permisosTab">
+            <div class="permisos-list" id="permisosList">
+              <!-- Los permisos se cargarán dinámicamente -->
+            </div>
+
+            <!-- Formulario de Permiso (oculto por defecto) -->
+            <div class="form-section" id="permisoFormSection" style="display: none;">
+              <h2 id="permisoFormTitle">Nuevo Permiso</h2>
+              <form class="permiso-form" id="permisoForm">
+                <div class="form-grid">
+                  <label class="field">
+                    <span>Rol *</span>
+                    <select id="permisoRol" required>
+                      <option value="">Seleccionar rol</option>
+                      <option value="ADMIN">ADMIN - Administrador</option>
+                      <option value="FACTURADOR">FACTURADOR - Facturador</option>
+                      <option value="CONTADOR">CONTADOR - Contador</option>
+                      <option value="CONSULTA">CONSULTA - Consulta</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span>Módulo *</span>
+                    <select id="permisoModulo" required>
+                      <option value="">Seleccionar módulo</option>
+                      <option value="FACTURACION">Facturación</option>
+                      <option value="CLIENTES">Clientes</option>
+                      <option value="PRODUCTOS">Productos/Servicios</option>
+                      <option value="REPORTES">Reportes</option>
+                      <option value="CONFIGURACION">Configuración</option>
+                      <option value="USUARIOS">Usuarios y Seguridad</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span>Acción *</span>
+                    <select id="permisoAccion" required>
+                      <option value="">Seleccionar acción</option>
+                      <option value="CREAR">Crear</option>
+                      <option value="LEER">Leer/Consultar</option>
+                      <option value="ACTUALIZAR">Actualizar</option>
+                      <option value="ELIMINAR">Eliminar</option>
+                      <option value="APROBAR">Aprobar</option>
+                      <option value="REPORTAR">Reportar</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span>Descripción</span>
+                    <textarea id="permisoDescripcion" rows="3" placeholder="Descripción del permiso específico"></textarea>
+                  </label>
+                </div>
+
+                <div class="form-actions">
+                  <button type="button" class="btn btn-outline" id="btnCancelarPermiso">Cancelar</button>
+                  <button type="submit" class="btn btn-primary">Guardar Permiso</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span>© <span id="year"></span> ADS Factura</span>
+        <nav class="footer-nav">
+          <a href="#">Términos</a>
+          <a href="#">Privacidad</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/roles-permisos.js"></script>
+  </body>
+</html>

@@ -80,7 +80,7 @@
   }
 
   // Login page form (solo en login.html)
-  const loginPageForm = document.querySelector('.login-form');
+  const loginPageForm = document.getElementById('loginForm');
   loginPageForm?.addEventListener('submit', (ev) => {
     ev.preventDefault();
     const email = document.getElementById('email');

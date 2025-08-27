@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ADS Factura — Perfiles</title>
+    <meta name="description" content="Gestiona perfiles de usuarios del sistema">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  </head>
+  <body class="perfiles-page">
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <i class="fas fa-file-invoice-dollar fa-lg text-white me-2"></i>
+          <span class="brand-name">ADS Factura</span>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Menú hamburguesa -->
+    <nav class="hamburger-menu" id="hamburgerMenu">
+      <div class="hamburger-header">
+        <div class="brand">
+          <i class="fas fa-file-invoice-dollar fa-lg text-white me-2"></i>
+          <span class="brand-name">ADS Factura</span>
+        </div>
+        <button class="close-menu" id="closeMenu" aria-label="Cerrar menú">
+          <span></span><span></span>
+        </button>
+      </div>
+      
+      <div class="menu-content">
+        <div class="menu-section">
+          <a class="menu-item" href="index.html">
+            <span class="menu-text">Home</span>
+          </a>
+          <a class="menu-item" href="login.html">
+            <span class="menu-text">Login</span>
+          </a>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Documentos</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="crear-factura.html">Crear Factura</a>
+            <a class="submenu-item" href="#">Notas Crédito</a>
+            <a class="submenu-item" href="#">Notas Débito</a>
+            <a class="submenu-item" href="#">Documentos Soporte</a>
+            <a class="submenu-item" href="#">Eventos de Factura</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Configuración</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="datos-empresa.html">Datos de la Empresa</a>
+            <a class="submenu-item" href="resoluciones-numeracion.html">Resoluciones de Numeración</a>
+            <a class="submenu-item" href="certificados-digitales.html">Certificados Digitales</a>
+            <a class="submenu-item" href="clientes.html">Clientes</a>
+            <a class="submenu-item" href="productos-servicios.html">Productos/Servicios</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Usuarios y Seguridad</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="usuarios.html">Usuarios</a>
+            <a class="submenu-item active" href="perfiles.html">Perfiles</a>
+            <a class="submenu-item" href="roles-permisos.html">Roles y Permisos</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Consultas y Reportes</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="#">Estado de Documentos</a>
+            <a class="submenu-item" href="#">Histórico de Documentos</a>
+            <a class="submenu-item" href="#">Estadísticas de Facturación</a>
+            <a class="submenu-item" href="#">Log de Envíos DIAN</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Soporte</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="#">Prueba de Conexión DIAN</a>
+            <a class="submenu-item" href="#">Monitor de Procesos</a>
+            <a class="submenu-item" href="#">Auditoría de Usuarios</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Overlay para cerrar el menú -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main>
+      <section class="perfiles-section">
+        <div class="container">
+          <div class="section-header">
+            <div>
+              <h1>Gestión de Perfiles</h1>
+              <p class="muted">Administra la información personal y profesional de los usuarios</p>
+            </div>
+            <button class="btn btn-primary" id="btnNuevoPerfil">
+              <i class="fas fa-plus"></i> Nuevo Perfil
+            </button>
+          </div>
+
+          <!-- Lista de Perfiles -->
+          <div class="perfiles-list" id="perfilesList">
+            <!-- Los perfiles se cargarán dinámicamente -->
+          </div>
+
+          <!-- Formulario de Perfil (oculto por defecto) -->
+          <div class="form-section" id="perfilFormSection" style="display: none;">
+            <h2 id="perfilFormTitle">Nuevo Perfil</h2>
+            <form class="perfil-form" id="perfilForm">
+              <div class="form-grid">
+                <label class="field">
+                  <span>Usuario *</span>
+                  <select id="perfilUsuario" required>
+                    <option value="">Seleccionar usuario</option>
+                    <option value="1">admin (Administrador Sistema)</option>
+                    <option value="2">juan.perez (Juan Pérez)</option>
+                    <option value="3">maria.garcia (María García)</option>
+                  </select>
+                  <small class="field-help">Usuario al que pertenece este perfil</small>
+                </label>
+                <label class="field">
+                  <span>Nombre *</span>
+                  <input type="text" id="perfilNombre" placeholder="Juan" required>
+                </label>
+                <label class="field">
+                  <span>Apellido *</span>
+                  <input type="text" id="perfilApellido" placeholder="Pérez" required>
+                </label>
+                <label class="field">
+                  <span>Teléfono</span>
+                  <input type="tel" id="perfilTelefono" placeholder="+57 300 123 4567">
+                </label>
+                <label class="field">
+                  <span>Cargo</span>
+                  <input type="text" id="perfilCargo" placeholder="Analista de Facturación">
+                </label>
+                <label class="field">
+                  <span>Departamento</span>
+                  <input type="text" id="perfilDepartamento" placeholder="Facturación">
+                </label>
+              </div>
+
+              <!-- Información Adicional -->
+              <div class="form-section" style="margin-top: 24px;">
+                <h3>Información Adicional</h3>
+                <div class="form-grid">
+                  <label class="field">
+                    <span>Fecha de Nacimiento</span>
+                    <input type="date" id="perfilFechaNacimiento">
+                  </label>
+                  <label class="field">
+                    <span>Género</span>
+                    <select id="perfilGenero">
+                      <option value="">Seleccionar</option>
+                      <option value="MASCULINO">Masculino</option>
+                      <option value="FEMENINO">Femenino</option>
+                      <option value="OTRO">Otro</option>
+                      <option value="PREFIERO_NO_DECIR">Prefiero no decir</option>
+                    </select>
+                  </label>
+                  <label class="field">
+                    <span>Dirección</span>
+                    <textarea id="perfilDireccion" rows="3" placeholder="Dirección de residencia"></textarea>
+                  </label>
+                  <label class="field">
+                    <span>Notas</span>
+                    <textarea id="perfilNotas" rows="3" placeholder="Información adicional del perfil"></textarea>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="button" class="btn btn-outline" id="btnCancelarPerfil">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Guardar Perfil</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span>© <span id="year"></span> ADS Factura</span>
+        <nav class="footer-nav">
+          <a href="#">Términos</a>
+          <a href="#">Privacidad</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/perfiles.js"></script>
+  </body>
+</html>
