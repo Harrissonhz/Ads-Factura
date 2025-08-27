@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ADS Factura — Iniciar Sesión</title>
+    <meta name="description" content="Accede a tu sistema de facturación electrónica">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <img src="assets/img/logo.svg" alt="ADS Factura" class="brand-logo" />
+          <span class="brand-name">ADS Factura</span>
+        </div>
+        <nav class="nav">
+          <a class="nav-link" href="index.html">Inicio</a>
+          <a class="nav-link" href="index.html#features">Características</a>
+          <a class="nav-link" href="index.html#modelo">Modelo de datos</a>
+          <a class="nav-link" href="index.html#contacto">Contacto</a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="login-section">
+        <div class="container login-container">
+          <div class="login-grid">
+            <div class="login-copy">
+              <h1>Bienvenido de vuelta</h1>
+              <p>Accede a tu panel de facturación electrónica para gestionar facturas, clientes y documentos soporte.</p>
+              <div class="login-features">
+                <div class="feature-item">
+                  <span class="dot success"></span>
+                  <span>Gestión completa de facturas</span>
+                </div>
+                <div class="feature-item">
+                  <span class="dot info"></span>
+                  <span>Integración con DIAN</span>
+                </div>
+                <div class="feature-item">
+                  <span class="dot neutral"></span>
+                  <span>Trazabilidad en tiempo real</span>
+                </div>
+              </div>
+            </div>
+            <div class="login-form-container">
+              <div class="login-card">
+                <h2>Iniciar sesión</h2>
+                <p class="muted">Ingresa tus credenciales para continuar</p>
+                
+                                 <form class="login-form" id="loginForm">
+                   <label class="field">
+                     <span>Correo electrónico</span>
+                     <input type="email" id="email" placeholder="tu@empresa.com" required>
+                   </label>
+                   
+                   <label class="field">
+                     <span>Contraseña</span>
+                     <input type="password" id="password" placeholder="••••••••" required>
+                   </label>
+                   
+                                       <div class="form-options">
+                      <label class="checkbox-field">
+                        <input type="checkbox" id="remember">
+                        <span>Recordar sesión</span>
+                      </label>
+                      <a href="forgot-password.html" class="forgot-link">¿Olvidaste tu contraseña?</a>
+                    </div>
+                   
+                   <div class="form-actions">
+                     <a href="index.html" class="btn btn-outline">Cancelar</a>
+                     <button type="submit" class="btn btn-primary">
+                       Ingresar al sistema
+                     </button>
+                   </div>
+                 </form>
+                
+                <div class="login-divider">
+                  <span>o</span>
+                </div>
+                
+                <div class="demo-credentials">
+                  <p class="muted">Credenciales de demostración:</p>
+                  <div class="demo-card">
+                    <div class="demo-item">
+                      <strong>Email:</strong> admin@adsfactura.local
+                    </div>
+                    <div class="demo-item">
+                      <strong>Contraseña:</strong> 123456
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span>© <span id="year"></span> ADS Factura</span>
+        <nav class="footer-nav">
+          <a href="#">Términos</a>
+          <a href="#">Privacidad</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>

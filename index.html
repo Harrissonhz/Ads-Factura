@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ADS Factura — Inicio</title>
+    <meta name="description" content="Sistema de facturación electrónica — ADS Factura">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <img src="assets/img/logo.svg" alt="ADS Factura" class="brand-logo" />
+          <span class="brand-name">ADS Factura</span>
+        </div>
+        <nav class="nav">
+          <a class="nav-link" href="#features">Características</a>
+          <a class="nav-link" href="#modelo">Modelo de datos</a>
+          <a class="nav-link" href="#contacto">Contacto</a>
+          <a href="login.html" class="btn btn-primary">Iniciar sesión</a>
+        </nav>
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <h1>Facturación electrónica moderna y confiable</h1>
+            <p>Base sólida sobre MySQL 8, lista para integrarse con DIAN y RADIAN. Gestiona facturas, notas, eventos y documentos soporte con trazabilidad completa.</p>
+            <div class="hero-actions">
+              <a href="#features" class="btn btn-secondary">Explorar</a>
+              <a href="login.html" class="btn btn-primary">Iniciar sesión</a>
+            </div>
+            <div class="hero-meta">
+              <div class="pill">MySQL 8</div>
+              <div class="pill">UTF-8</div>
+              <div class="pill">Responsive</div>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="card kpi-card">
+              <div class="kpi">
+                <span class="kpi-value">119.000</span>
+                <span class="kpi-label">Factura demo FE1001</span>
+              </div>
+              <div class="divider"></div>
+              <ul class="mini-list">
+                <li>
+                  <span class="dot success"></span>
+                  VALIDADA DIAN
+                </li>
+                <li>
+                  <span class="dot info"></span>
+                  250 ms latencia envío
+                </li>
+                <li>
+                  <span class="dot neutral"></span>
+                  CUFE: CUFE123456789
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="section">
+        <div class="container">
+          <h2>Características</h2>
+          <div class="features-grid">
+            <article class="feature">
+              <h3>Modelo de datos completo</h3>
+              <p>Tablas para EMPRESA, CLIENTE, FACTURA, EVENTOS, RADIAN, NOTAS y DOCUMENTO SOPORTE con llaves foráneas y unicidad.</p>
+            </article>
+            <article class="feature">
+              <h3>Trazabilidad</h3>
+              <p>Registro de envíos y eventos con payload JSON para auditoría y seguimiento.</p>
+            </article>
+            <article class="feature">
+              <h3>Escalable</h3>
+              <p>Estructura normalizada lista para índices, vistas y servicios REST.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="modelo" class="section alt">
+        <div class="container">
+          <h2>Modelo de datos</h2>
+          <p>Basado en MySQL 8 con `utf8mb4`. Incluye CUFE/CUDE únicos, estados `ENUM` y referencias entre cabeceras y líneas para garantizar integridad.</p>
+          <div class="cards">
+            <div class="card">
+              <h4>Facturas</h4>
+              <p>Cabecera y líneas con totales, impuestos y estado DIAN.</p>
+            </div>
+            <div class="card">
+              <h4>Eventos</h4>
+              <p>ACUSE, RECIBO, ACEPTACIÓN y más, con usuario y fecha.</p>
+            </div>
+            <div class="card">
+              <h4>Radian</h4>
+              <p>Registro de estado y fecha de RADIAN por factura.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contacto" class="section">
+        <div class="container">
+          <h2>Contacto</h2>
+          <p>¿Necesitas integrar ADS Factura con tu backend? Escríbenos para asesorarte en la emisión, firma y envío a DIAN.</p>
+          <a href="mailto:contacto@adsfactura.local" class="btn btn-outline">contacto@adsfactura.local</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span>© <span id="year"></span> ADS Factura</span>
+        <nav class="footer-nav">
+          <a href="#">Términos</a>
+          <a href="#">Privacidad</a>
+        </nav>
+      </div>
+    </footer>
+
+
+
+    <script src="assets/js/main.js"></script>
+  </body>
+  </html>
+

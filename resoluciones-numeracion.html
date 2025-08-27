@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ADS Factura — Resoluciones de Numeración</title>
+    <meta name="description" content="Gestiona las resoluciones de numeración para facturación electrónica">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  </head>
+  <body class="crear-factura-page">
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <img src="assets/img/logo.svg" alt="ADS Factura" class="brand-logo" />
+          <span class="brand-name">ADS Factura</span>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Menú hamburguesa -->
+    <nav class="hamburger-menu" id="hamburgerMenu">
+      <div class="hamburger-header">
+        <div class="brand">
+          <img src="assets/img/logo.svg" alt="ADS Factura" class="brand-logo" />
+          <span class="brand-name">ADS Factura</span>
+        </div>
+        <button class="close-menu" id="closeMenu" aria-label="Cerrar menú">
+          <span></span><span></span>
+        </button>
+      </div>
+      
+      <div class="menu-content">
+        <div class="menu-section">
+          <a class="menu-item" href="index.html">
+            <span class="menu-text">Home</span>
+          </a>
+          <a class="menu-item" href="login.html">
+            <span class="menu-text">Login</span>
+          </a>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Documentos</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="crear-factura.html">Crear Factura</a>
+            <a class="submenu-item" href="#">Notas Crédito</a>
+            <a class="submenu-item" href="#">Notas Débito</a>
+            <a class="submenu-item" href="#">Documentos Soporte</a>
+            <a class="submenu-item" href="#">Eventos de Factura</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Configuración</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="datos-empresa.html">Datos de la Empresa</a>
+            <a class="submenu-item active" href="resoluciones-numeracion.html">Resoluciones de Numeración</a>
+            <a class="submenu-item" href="#">Certificados Digitales</a>
+            <a class="submenu-item" href="#">Clientes</a>
+            <a class="submenu-item" href="#">Productos/Servicios</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Usuarios y Seguridad</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="#">Usuarios</a>
+            <a class="submenu-item" href="#">Perfiles</a>
+            <a class="submenu-item" href="#">Roles y Permisos</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Consultas y Reportes</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="#">Estado de Documentos</a>
+            <a class="submenu-item" href="#">Histórico de Documentos</a>
+            <a class="submenu-item" href="#">Estadísticas de Facturación</a>
+            <a class="submenu-item" href="#">Log de Envíos DIAN</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Soporte</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="#">Prueba de Conexión DIAN</a>
+            <a class="submenu-item" href="#">Monitor de Procesos</a>
+            <a class="submenu-item" href="#">Auditoría de Usuarios</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Overlay para cerrar el menú -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main>
+      <section class="factura-section">
+        <div class="container">
+          <div class="factura-header">
+            <h1>Resoluciones de Numeración</h1>
+            <p class="muted">Gestiona las resoluciones autorizadas por la DIAN para la numeración de facturas</p>
+          </div>
+
+          <!-- Lista de Resoluciones -->
+          <div class="form-section">
+            <div class="section-header">
+              <h2>Resoluciones Registradas</h2>
+              <button type="button" class="btn btn-primary" id="btnNuevaResolucion">
+                + Nueva Resolución
+              </button>
+            </div>
+            
+            <div class="resoluciones-list" id="resolucionesList">
+              <!-- Las resoluciones se cargarán dinámicamente -->
+            </div>
+          </div>
+
+          <!-- Formulario de Nueva Resolución (oculto por defecto) -->
+          <form class="factura-form" id="resolucionForm" style="display: none;">
+            <div class="form-section">
+              <h2>Nueva Resolución de Numeración</h2>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Empresa *</span>
+                  <select id="resolucionEmpresa" required>
+                    <option value="">Seleccionar empresa</option>
+                    <option value="1">EMPRESA DEMO S.A.S. (900123456-7)</option>
+                    <option value="2">OTRA EMPRESA LTDA. (800987654-3)</option>
+                  </select>
+                  <small class="field-help">Empresa a la que pertenece la resolución</small>
+                </label>
+                <label class="field">
+                  <span>Prefijo *</span>
+                  <input type="text" id="resolucionPrefijo" placeholder="FE" maxlength="10" required>
+                  <small class="field-help">Prefijo autorizado por la DIAN</small>
+                </label>
+                <label class="field">
+                  <span>Rango Inicial *</span>
+                  <input type="number" id="resolucionRangoInicial" placeholder="1" min="1" required>
+                  <small class="field-help">Número inicial del rango autorizado</small>
+                </label>
+                <label class="field">
+                  <span>Rango Final *</span>
+                  <input type="number" id="resolucionRangoFinal" placeholder="1000" min="1" required>
+                  <small class="field-help">Número final del rango autorizado</small>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h2>Vigencia de la Resolución</h2>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Fecha de Inicio *</span>
+                  <input type="date" id="resolucionFechaInicio" required>
+                  <small class="field-help">Fecha desde la cual es válida la resolución</small>
+                </label>
+                <label class="field">
+                  <span>Fecha de Fin *</span>
+                  <input type="date" id="resolucionFechaFin" required>
+                  <small class="field-help">Fecha hasta la cual es válida la resolución</small>
+                </label>
+                <label class="field">
+                  <span>Estado *</span>
+                  <select id="resolucionEstado" required>
+                    <option value="">Seleccionar estado</option>
+                    <option value="ACTIVA">Activa</option>
+                    <option value="INACTIVA">Inactiva</option>
+                    <option value="VENCIDA">Vencida</option>
+                    <option value="SUSPENDIDA">Suspendida</option>
+                  </select>
+                  <small class="field-help">Estado actual de la resolución</small>
+                </label>
+                <label class="field">
+                  <span>Número de Resolución DIAN</span>
+                  <input type="text" id="resolucionNumeroDIAN" placeholder="RES-00000001">
+                  <small class="field-help">Número de resolución asignado por la DIAN</small>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <h2>Información Adicional</h2>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Tipo de Documento</span>
+                  <select id="resolucionTipoDocumento">
+                    <option value="FACTURA">Factura</option>
+                    <option value="NOTA_CREDITO">Nota Crédito</option>
+                    <option value="NOTA_DEBITO">Nota Débito</option>
+                    <option value="DOCUMENTO_SOPORTE">Documento Soporte</option>
+                  </select>
+                  <small class="field-help">Tipo de documento que autoriza la resolución</small>
+                </label>
+                <label class="field">
+                  <span>Descripción</span>
+                  <input type="text" id="resolucionDescripcion" placeholder="Resolución para facturación electrónica">
+                  <small class="field-help">Descripción opcional de la resolución</small>
+                </label>
+                <label class="field">
+                  <span>Observaciones</span>
+                  <textarea id="resolucionObservaciones" rows="3" placeholder="Observaciones adicionales sobre la resolución"></textarea>
+                  <small class="field-help">Observaciones o notas sobre la resolución</small>
+                </label>
+              </div>
+            </div>
+
+            <!-- Acciones -->
+            <div class="form-actions">
+              <button type="button" class="btn btn-outline" id="btnCancelarResolucion">Cancelar</button>
+              <button type="button" class="btn btn-secondary" id="btnGuardarBorradorResolucion">Guardar Borrador</button>
+              <button type="submit" class="btn btn-primary">Guardar Resolución</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span>© <span id="year"></span> ADS Factura</span>
+        <nav class="footer-nav">
+          <a href="#">Términos</a>
+          <a href="#">Privacidad</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/resoluciones.js"></script>
+  </body>
+</html>

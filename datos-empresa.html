@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ADS Factura — Datos de la Empresa</title>
+    <meta name="description" content="Gestiona los datos de tu empresa para facturación electrónica">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  </head>
+  <body class="crear-factura-page">
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="brand">
+          <img src="assets/img/logo.svg" alt="ADS Factura" class="brand-logo" />
+          <span class="brand-name">ADS Factura</span>
+        </div>
+        <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Menú hamburguesa -->
+    <nav class="hamburger-menu" id="hamburgerMenu">
+      <div class="hamburger-header">
+        <div class="brand">
+          <img src="assets/img/logo.svg" alt="ADS Factura" class="brand-logo" />
+          <span class="brand-name">ADS Factura</span>
+        </div>
+        <button class="close-menu" id="closeMenu" aria-label="Cerrar menú">
+          <span></span><span></span>
+        </button>
+      </div>
+      
+      <div class="menu-content">
+        <div class="menu-section">
+          <a class="menu-item" href="index.html">
+            <span class="menu-text">Home</span>
+          </a>
+          <a class="menu-item" href="login.html">
+            <span class="menu-text">Login</span>
+          </a>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Documentos</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="crear-factura.html">Crear Factura</a>
+            <a class="submenu-item" href="#">Notas Crédito</a>
+            <a class="submenu-item" href="#">Notas Débito</a>
+            <a class="submenu-item" href="#">Documentos Soporte</a>
+            <a class="submenu-item" href="#">Eventos de Factura</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Configuración</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item active" href="datos-empresa.html">Datos de la Empresa</a>
+            <a class="submenu-item" href="resoluciones-numeracion.html">Resoluciones de Numeración</a>
+            <a class="submenu-item" href="#">Certificados Digitales</a>
+            <a class="submenu-item" href="#">Clientes</a>
+            <a class="submenu-item" href="#">Productos/Servicios</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Usuarios y Seguridad</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="#">Usuarios</a>
+            <a class="submenu-item" href="#">Perfiles</a>
+            <a class="submenu-item" href="#">Roles y Permisos</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Consultas y Reportes</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="#">Estado de Documentos</a>
+            <a class="submenu-item" href="#">Histórico de Documentos</a>
+            <a class="submenu-item" href="#">Estadísticas de Facturación</a>
+            <a class="submenu-item" href="#">Log de Envíos DIAN</a>
+          </div>
+        </div>
+
+        <div class="menu-section">
+          <div class="menu-category">
+            <span class="menu-text">Soporte</span>
+            <span class="menu-arrow">▼</span>
+          </div>
+          <div class="submenu">
+            <a class="submenu-item" href="#">Prueba de Conexión DIAN</a>
+            <a class="submenu-item" href="#">Monitor de Procesos</a>
+            <a class="submenu-item" href="#">Auditoría de Usuarios</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Overlay para cerrar el menú -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main>
+      <section class="factura-section">
+        <div class="container">
+          <div class="factura-header">
+            <h1>Datos de la Empresa</h1>
+            <p class="muted">Configura la información de tu empresa para la facturación electrónica</p>
+          </div>
+
+          <form class="factura-form" id="empresaForm">
+            <!-- Información Básica de la Empresa -->
+            <div class="form-section">
+              <h2>Información Básica</h2>
+              <div class="form-grid">
+                <label class="field">
+                  <span>NIT *</span>
+                  <input type="text" id="empresaNit" placeholder="900123456-7" required>
+                  <small class="field-help">Número de Identificación Tributaria</small>
+                </label>
+                <label class="field">
+                  <span>Razón Social *</span>
+                  <input type="text" id="empresaRazon" placeholder="EMPRESA DEMO S.A.S." required>
+                  <small class="field-help">Nombre legal de la empresa</small>
+                </label>
+                <label class="field">
+                  <span>Dirección</span>
+                  <input type="text" id="empresaDireccion" placeholder="Cra 10 # 20-30, Bogotá D.C.">
+                  <small class="field-help">Dirección completa de la empresa</small>
+                </label>
+                <label class="field">
+                  <span>Régimen Tributario</span>
+                  <select id="empresaRegimen">
+                    <option value="">Seleccionar régimen</option>
+                    <option value="REGIMEN COMUN">Régimen Común</option>
+                    <option value="REGIMEN SIMPLIFICADO">Régimen Simplificado</option>
+                    <option value="GRAN CONTRIBUYENTE">Gran Contribuyente</option>
+                    <option value="AUTORRETENEDOR">Autorretenedor</option>
+                    <option value="AGENTE DE RETENCION">Agente de Retención</option>
+                  </select>
+                  <small class="field-help">Régimen tributario de la empresa</small>
+                </label>
+              </div>
+            </div>
+
+            <!-- Información de Contacto -->
+            <div class="form-section">
+              <h2>Información de Contacto</h2>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Email</span>
+                  <input type="email" id="empresaEmail" placeholder="contacto@empresa.com">
+                  <small class="field-help">Correo electrónico principal</small>
+                </label>
+                <label class="field">
+                  <span>Teléfono</span>
+                  <input type="tel" id="empresaTelefono" placeholder="+57 1 234 5678">
+                  <small class="field-help">Número telefónico de contacto</small>
+                </label>
+                <label class="field">
+                  <span>Sitio Web</span>
+                  <input type="url" id="empresaWebsite" placeholder="https://www.empresa.com">
+                  <small class="field-help">Página web de la empresa</small>
+                </label>
+                <label class="field">
+                  <span>Representante Legal</span>
+                  <input type="text" id="empresaRepresentante" placeholder="Juan Pérez">
+                  <small class="field-help">Nombre del representante legal</small>
+                </label>
+              </div>
+            </div>
+
+            <!-- Información Adicional -->
+            <div class="form-section">
+              <h2>Información Adicional</h2>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Código de Actividad Económica</span>
+                  <input type="text" id="empresaCIIU" placeholder="6201">
+                  <small class="field-help">Código CIIU de la actividad principal</small>
+                </label>
+                <label class="field">
+                  <span>Descripción Actividad</span>
+                  <input type="text" id="empresaActividad" placeholder="Desarrollo de software">
+                  <small class="field-help">Descripción de la actividad económica</small>
+                </label>
+                <label class="field">
+                  <span>Ciudad</span>
+                  <input type="text" id="empresaCiudad" placeholder="Bogotá D.C.">
+                  <small class="field-help">Ciudad donde opera la empresa</small>
+                </label>
+                <label class="field">
+                  <span>Departamento</span>
+                  <input type="text" id="empresaDepartamento" placeholder="Cundinamarca">
+                  <small class="field-help">Departamento donde opera la empresa</small>
+                </label>
+              </div>
+            </div>
+
+            <!-- Configuración de Facturación -->
+            <div class="form-section">
+              <h2>Configuración de Facturación</h2>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Prefijo por Defecto</span>
+                  <input type="text" id="empresaPrefijo" placeholder="FE" maxlength="10">
+                  <small class="field-help">Prefijo predeterminado para facturas</small>
+                </label>
+                <label class="field">
+                  <span>Consecutivo Inicial</span>
+                  <input type="number" id="empresaConsecutivo" placeholder="1" min="1">
+                  <small class="field-help">Número inicial para consecutivos</small>
+                </label>
+                <label class="field">
+                  <span>Moneda</span>
+                  <select id="empresaMoneda">
+                    <option value="COP">Peso Colombiano (COP)</option>
+                    <option value="USD">Dólar Estadounidense (USD)</option>
+                    <option value="EUR">Euro (EUR)</option>
+                  </select>
+                  <small class="field-help">Moneda principal para facturación</small>
+                </label>
+                <label class="field">
+                  <span>Idioma</span>
+                  <select id="empresaIdioma">
+                    <option value="es">Español</option>
+                    <option value="en">Inglés</option>
+                  </select>
+                  <small class="field-help">Idioma para documentos</small>
+                </label>
+              </div>
+            </div>
+
+            <!-- Acciones -->
+            <div class="form-actions">
+              <a href="crear-factura.html" class="btn btn-outline">Cancelar</a>
+              <button type="button" class="btn btn-secondary" id="btnGuardarBorrador">Guardar Borrador</button>
+              <button type="submit" class="btn btn-primary">Guardar Datos</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <span>© <span id="year"></span> ADS Factura</span>
+        <nav class="footer-nav">
+          <a href="#">Términos</a>
+          <a href="#">Privacidad</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/empresa.js"></script>
+  </body>
+</html>
