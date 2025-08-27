@@ -1,0 +1,107 @@
+USE facturacion_electronica;
+
+-- =====================================================
+-- 1. EMPRESA (Emisor)
+-- =====================================================
+INSERT INTO EMPRESA 
+(nit, razon_social, nombre_comercial, direccion, ciudad, departamento, pais, telefono, email, regimen, responsabilidad_fiscal, estado) 
+VALUES
+('900123456-7', 'EMPRESA DEMO S.A.S', 'EMPRESA DEMO', 'Calle 123 #45-67', 'Bogotá', 'Cundinamarca', 'CO', '6011234567', 'contacto@empresademo.com', 'Régimen Común', 'IVA Responsable', 'ACTIVA');
+
+-- =====================================================
+-- 2. RESOLUCION_NUMERACION (Numeración DIAN)
+-- =====================================================
+INSERT INTO RESOLUCION_NUMERACION
+(empresa_id, prefijo, rango_inicial, rango_final, fecha_inicio, fecha_fin, estado, numero_resolucion_dian)
+VALUES
+(1, 'FE', 1, 10000, '2025-01-01', '2025-12-31', 'ACTIVA', '18760000001');
+
+-- =====================================================
+-- 3. CERTIFICADO_DIGITAL
+-- =====================================================
+INSERT INTO CERTIFICADO_DIGITAL
+(empresa_id, nombre_certificado, serie, fecha_inicio, fecha_fin, ubicacion)
+VALUES
+(1, 'Certificado Demo', 'SERIE12345', '2025-01-01', '2026-01-01', '/certs/demo_cert.pfx');
+
+-- =====================================================
+-- 4. CLIENTE (Adquirente/Receptor)
+-- =====================================================
+INSERT INTO CLIENTE
+(tipo_documento, numero_documento, razon_social, nombre_comercial, direccion, ciudad, departamento, pais, telefono, email, responsabilidad_fiscal)
+VALUES
+('NIT', '800987654-3', 'CLIENTE DEMO LTDA', 'CLIENTE DEMO', 'Carrera 10 #20-30', 'Medellín', 'Antioquia', 'CO', '6047654321', 'cliente@demo.com', 'No responsable de IVA');
+
+-- =====================================================
+-- 5. PRODUCTO_SERVICIO
+-- =====================================================
+INSERT INTO PRODUCTO_SERVICIO
+(empresa_id, codigo, codigo_estandar, nombre, descripcion, unidad_medida, precio_unitario, tipo, tipo_impuesto, porcentaje_impuesto, costo, estado)
+VALUES
+(1, 'P001', '10101500', 'Laptop Básica', 'Computador portátil para oficina', 'UND', 2000000, 'PRODUCTO', 'IVA', 19.00, 1500000, 'ACTIVO'),
+(1, 'S001', '81111500', 'Soporte Técnico', 'Servicio de soporte técnico por hora', 'HUR', 80000, 'SERVICIO', 'IVA', 19.00, 50000, 'ACTIVO');
+
+-- =====================================================
+-- 6. DOCUMENTO_ELECTRONICO (Factura)
+-- =====================================================
+INSERT INTO DOCUMENTO_ELECTRONICO
+(empresa_id, cliente_id, tipo_documento, referencia_documento_id, prefijo, consecutivo, cufe_cude, subtotal, impuestos, total, fecha_emision, estado_dian, enlace_pdf, enlace_xml)
+VALUES
+(1, 1, 'FACTURA', NULL, 'FE', 1, 'CUFE1234567890', 2000000, 380000, 2380000, NOW(), 'PENDIENTE', '/docs/factura1.pdf', '/docs/factura1.xml');
+
+-- =====================================================
+-- 7. DOCUMENTO_ELECTRONICO_LINEA
+-- =====================================================
+INSERT INTO DOCUMENTO_ELECTRONICO_LINEA
+(documento_id, producto_servicio_id, descripcion, cantidad, precio_unitario, impuestos, total)
+VALUES
+(1, 1, 'Laptop Básica', 1, 2000000, 380000, 2380000);
+
+-- =====================================================
+-- 8. USUARIOS Y SEGURIDAD
+-- =====================================================
+INSERT INTO USUARIO
+(empresa_id, username, password_hash, email, estado)
+VALUES
+(1, 'admin', 'HASHEDPASSWORD123', 'admin@empresademo.com', 'ACTIVO');
+
+INSERT INTO PERFIL
+(usuario_id, nombre, apellido, telefono, cargo)
+VALUES
+(1, 'Carlos', 'Pérez', '3001234567', 'Administrador');
+
+INSERT INTO ROL
+(nombre, descripcion)
+VALUES
+('ADMIN', 'Administrador del sistema');
+
+INSERT INTO USUARIO_ROL
+(usuario_id, rol_id)
+VALUES
+(1, 1);
+
+INSERT INTO PERMISO
+(rol_id, modulo, accion)
+VALUES
+(1, 'FACTURACION', 'CREAR'),
+(1, 'FACTURACION', 'CONSULTAR'),
+(1, 'SEGURIDAD', 'ADMINISTRAR');
+
+-- =====================================================
+-- 9. ENVÍO A DIAN / LOGS / AUDITORÍA
+-- =====================================================
+INSERT INTO ENVIO_DIAN
+(factura_id, request_id, codigo_dian, mensaje, reintentos, latencia_ms, fecha_envio)
+VALUES
+(1, 'REQ123456', '200', 'Factura enviada correctamente', 0, 120.50, NOW());
+
+INSERT INTO LOG_ENVIO_DIAN
+(envio_dian_id, estado, mensaje, fecha)
+VALUES
+(1, 'ENVIADO', 'Factura aceptada por DIAN', NOW());
+
+INSERT INTO AUDITORIA_USUARIO
+(usuario_id, accion, modulo, descripcion, fecha)
+VALUES
+(1, 'LOGIN', 'SEGURIDAD', 'Usuario admin inició sesión', NOW());
+

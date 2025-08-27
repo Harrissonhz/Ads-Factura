@@ -1,0 +1,246 @@
+-- ========================================
+-- BASE DE DATOS
+-- ========================================
+DROP DATABASE IF EXISTS facturacion_electronica;
+CREATE DATABASE facturacion_electronica
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_general_ci;
+
+USE facturacion_electronica;
+
+-- ========================================
+-- TABLAS EMPRESA (Emisor de documentos electrónicos)
+-- ========================================
+CREATE TABLE EMPRESA (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nit VARCHAR(20) NOT NULL UNIQUE,              				-- NIT de la empresa con DV
+    razon_social VARCHAR(255) NOT NULL,           				-- Razón social registrada en la DIAN
+    nombre_comercial VARCHAR(255),                				-- Nombre comercial (si aplica)
+    direccion VARCHAR(255) NOT NULL,              				-- Dirección principal
+    ciudad VARCHAR(100) NOT NULL,                 				-- Municipio/Distrito
+    departamento VARCHAR(100) NOT NULL,           				-- Departamento
+    pais CHAR(2) NOT NULL DEFAULT 'CO',           				-- País en código ISO (ej. 'CO')
+    telefono VARCHAR(50),                         				-- Teléfono de contacto
+    email VARCHAR(255) NOT NULL,                  				-- Correo electrónico registrado en la DIAN
+    regimen VARCHAR(100),                         				-- Régimen tributario (ej. Simplificado)
+    responsabilidad_fiscal VARCHAR(100),          				-- Responsabilidad fiscal según RUT (ej. IVA Responsable)
+    estado ENUM('ACTIVA','INACTIVA') NOT NULL DEFAULT 'ACTIVA' 	-- Estado de la empresa en el sistema
+);
+
+
+
+-- ========================================
+-- TABLAS RESOLUCIÓN Y CERTIFICADO
+-- ========================================
+CREATE TABLE RESOLUCION_NUMERACION (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    empresa_id INT NOT NULL,
+    prefijo VARCHAR(10) NOT NULL,
+    rango_inicial INT NOT NULL,
+    rango_final INT NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL,
+    estado VARCHAR(50) NOT NULL,
+	numero_resolucion_dian VARCHAR(30) NOT NULL,
+    FOREIGN KEY (empresa_id) REFERENCES EMPRESA(id)
+);
+
+CREATE TABLE CERTIFICADO_DIGITAL (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    empresa_id INT NOT NULL,
+    nombre_certificado VARCHAR(255) NOT NULL,
+    serie VARCHAR(100) NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL,
+    ubicacion VARCHAR(255) NOT NULL,
+    FOREIGN KEY (empresa_id) REFERENCES EMPRESA(id)
+);
+
+-- ========================================
+-- TABLAS CLIENTE (Adquirente/Receptor de documentos electrónicos)
+-- ========================================
+CREATE TABLE CLIENTE (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    tipo_documento ENUM('NIT','CC','CE','TI','PAS') NOT NULL, -- Tipo de documento
+    numero_documento VARCHAR(20) NOT NULL,                    -- Número de identificación
+    razon_social VARCHAR(255) NOT NULL,                       -- Razón social o nombre completo
+    nombre_comercial VARCHAR(255),                            -- Nombre comercial (si aplica)
+    direccion VARCHAR(255) NOT NULL,                          -- Dirección principal
+    ciudad VARCHAR(100) NOT NULL,                             -- Municipio/Distrito
+    departamento VARCHAR(100) NOT NULL,                       -- Departamento
+    pais CHAR(2) NOT NULL DEFAULT 'CO',                       -- País (ISO, ej. 'CO')
+    telefono VARCHAR(50),                                     -- Teléfono de contacto
+    email VARCHAR(150) NOT NULL,                              -- Correo electrónico (obligatorio en XML)
+    responsabilidad_fiscal VARCHAR(100)                       -- Responsabilidad fiscal (ej. No responsable de IVA)
+);
+
+
+-- ========================================
+-- TABLA DOCUMENTO ELECTRONICO
+-- Representa todos los documentos electrónicos: 
+-- Facturas, Notas Crédito, Notas Débito y Documentos Soporte
+-- ========================================
+CREATE TABLE DOCUMENTO_ELECTRONICO (
+    id INT AUTO_INCREMENT PRIMARY KEY,	-- Identificador único del documento electrónico.
+    empresa_id INT NOT NULL,  			-- Empresa emisora del documento. FK a EMPRESA(id).
+    cliente_id INT NOT NULL,   			-- Cliente o tercero receptor del documento. FK a CLIENTE(id).
+    tipo_documento ENUM('FACTURA','NOTA_CREDITO','NOTA_DEBITO','DOCUMENTO_SOPORTE') NOT NULL,     -- Tipo de documento electrónico que se está emitiendo.
+    referencia_documento_id INT NULL,  	-- Relación opcional con otro documento electrónico (ej: Nota Crédito referenciada a una Factura).
+										-- FK autorreferenciada a DOCUMENTO_ELECTRONICO(id).
+    prefijo VARCHAR(10) NOT NULL,  		-- Prefijo autorizado por la DIAN para numeración del documento.
+    consecutivo INT NOT NULL,  			-- Número consecutivo asignado al documento.
+    cufe_cude VARCHAR(255) UNIQUE,   	-- Código Único de Factura Electrónica (CUFE) o de Documento Soporte (CUDE).
+    subtotal DECIMAL(18,2) NOT NULL,    -- Valor antes de impuestos.
+    impuestos DECIMAL(18,2) NOT NULL,   -- Valor total de los impuestos aplicados al documento.
+    total DECIMAL(18,2) NOT NULL,    	-- Valor total del documento = subtotal + impuestos.
+    fecha_emision DATETIME NOT NULL,    -- Fecha y hora de emisión del documento.
+    estado_dian VARCHAR(50),     		-- Estado del documento frente a la DIAN (ej: ACEPTADO, RECHAZADO, PENDIENTE).
+    enlace_pdf VARCHAR(255),     		-- Ruta o URL donde se almacena el PDF del documento.
+    enlace_xml VARCHAR(255),     		-- Ruta o URL donde se almacena el XML del documento.
+    FOREIGN KEY (empresa_id) REFERENCES EMPRESA(id),
+    FOREIGN KEY (cliente_id) REFERENCES CLIENTE(id),
+    FOREIGN KEY (referencia_documento_id) REFERENCES DOCUMENTO_ELECTRONICO(id)
+);
+
+-- ========================================
+-- TABLA PRODUCTO_SERVICIO
+-- Catálogo de productos y servicios ofrecidos por la empresa.
+-- Se usa para alimentar documentos electrónicos de forma estándar.
+-- ========================================
+CREATE TABLE PRODUCTO_SERVICIO (
+    id INT AUTO_INCREMENT PRIMARY KEY,      		-- Identificador único del producto o servicio.
+    empresa_id INT NOT NULL,     					-- Empresa a la cual pertenece este producto/servicio. FK a EMPRESA(id).
+    codigo VARCHAR(50) NOT NULL,  					-- Código interno de identificación del producto/servicio.
+    codigo_estandar VARCHAR(50),   					-- Código estándar (ej: UNSPSC u otro código exigido por DIAN).
+    nombre VARCHAR(255) NOT NULL,   				-- Nombre corto del producto/servicio.
+    descripcion TEXT,     							-- Descripción detallada del producto o servicio.
+    unidad_medida VARCHAR(10) NOT NULL,     		-- Unidad de medida (ej: H87 = unidad, KGM = kilogramo, HUR = hora).
+    precio_unitario DECIMAL(18,2) NOT NULL, 		-- Precio unitario de venta (sin impuestos).
+    tipo ENUM('PRODUCTO','SERVICIO') NOT NULL, 		-- Define si el ítem es un producto físico o un servicio.
+    tipo_impuesto VARCHAR(50) DEFAULT 'IVA',    	-- Tipo de impuesto aplicable (ej: IVA, ICO, INC).
+    porcentaje_impuesto DECIMAL(5,2) DEFAULT 0.00,  -- Porcentaje de impuesto (ej: 19.00 para IVA).
+    costo DECIMAL(18,2),      						-- Costo del producto o servicio (opcional, útil para márgenes de ganancia).
+    estado VARCHAR(50) DEFAULT 'ACTIVO',      		-- Estado del registro: ACTIVO / INACTIVO.
+    UNIQUE KEY (empresa_id, codigo),
+    FOREIGN KEY (empresa_id) REFERENCES EMPRESA(id)
+);
+
+-- ========================================
+-- TABLA DOCUMENTO ELECTRONICO LINEA
+-- Representa el detalle de cada documento electrónico.
+-- Cada registro es un ítem facturado (producto o servicio).
+-- ========================================
+CREATE TABLE DOCUMENTO_ELECTRONICO_LINEA (
+    id INT AUTO_INCREMENT PRIMARY KEY,      -- Identificador único de la línea.
+    documento_id INT NOT NULL,      		-- Documento al que pertenece la línea. FK a DOCUMENTO_ELECTRONICO(id).
+    producto_servicio_id INT,      			-- Referencia opcional al producto/servicio maestro. FK a PRODUCTO_SERVICIO(id).
+											-- Puede ser NULL si es un ítem no registrado previamente.
+    descripcion VARCHAR(255),      			-- Descripción libre o tomada del catálogo del producto/servicio.
+    cantidad DECIMAL(10,2) NOT NULL,  	    -- Cantidad facturada del producto o servicio (ej: unidades, horas, kilos).
+    precio_unitario DECIMAL(18,2) NOT NULL, -- Precio por unidad sin impuestos.
+    impuestos DECIMAL(18,2),      			-- Valor de impuestos aplicados a esta línea.
+    total DECIMAL(18,2),      				-- Valor total de la línea = (cantidad * precio_unitario) + impuestos.
+    FOREIGN KEY (documento_id) REFERENCES DOCUMENTO_ELECTRONICO(id),
+    FOREIGN KEY (producto_servicio_id) REFERENCES PRODUCTO_SERVICIO(id)
+);
+
+CREATE TABLE EVENTO_FACTURA (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    factura_id INT NOT NULL,
+    tipo_evento VARCHAR(100) NOT NULL,
+    fecha_evento DATETIME NOT NULL,
+    usuario VARCHAR(100),
+    payload JSON,
+    FOREIGN KEY (factura_id) REFERENCES DOCUMENTO_ELECTRONICO(id)
+);
+
+
+CREATE TABLE RADIAN_REGISTRO (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    factura_id INT NOT NULL,
+    estado VARCHAR(50),
+    fecha_registro DATETIME NOT NULL,
+    FOREIGN KEY (factura_id) REFERENCES DOCUMENTO_ELECTRONICO(id)
+);
+
+CREATE TABLE ENVIO_DIAN (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    factura_id INT NOT NULL,
+    request_id VARCHAR(255),
+    codigo_dian VARCHAR(50),
+    mensaje TEXT,
+    reintentos INT DEFAULT 0,
+    latencia_ms DECIMAL(10,2),
+    fecha_envio DATETIME NOT NULL,
+    FOREIGN KEY (factura_id) REFERENCES DOCUMENTO_ELECTRONICO(id)
+);
+
+
+-- ========================================
+-- TABLAS DE SEGURIDAD: USUARIOS, PERFILES, ROLES, PERMISOS
+-- ========================================
+CREATE TABLE USUARIO (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    empresa_id INT NOT NULL,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL,
+    estado VARCHAR(50) DEFAULT 'ACTIVO',
+    FOREIGN KEY (empresa_id) REFERENCES EMPRESA(id)
+);
+
+CREATE TABLE PERFIL (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    nombre VARCHAR(100),
+    apellido VARCHAR(100),
+    telefono VARCHAR(50),
+    cargo VARCHAR(100),
+    FOREIGN KEY (usuario_id) REFERENCES USUARIO(id)
+);
+
+CREATE TABLE ROL (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL UNIQUE,
+    descripcion VARCHAR(255)
+);
+
+CREATE TABLE USUARIO_ROL (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    rol_id INT NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES USUARIO(id),
+    FOREIGN KEY (rol_id) REFERENCES ROL(id),
+    UNIQUE KEY (usuario_id, rol_id)
+);
+
+CREATE TABLE PERMISO (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    rol_id INT NOT NULL,
+    modulo VARCHAR(100) NOT NULL,
+    accion VARCHAR(100) NOT NULL,
+    FOREIGN KEY (rol_id) REFERENCES ROL(id),
+    UNIQUE KEY (rol_id, modulo, accion)
+);
+
+-- ========================================
+-- CONSULTAS Y REPORTES (LOGS/AUDITORÍA)
+-- ========================================
+CREATE TABLE LOG_ENVIO_DIAN (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    envio_dian_id INT NOT NULL,
+    estado VARCHAR(50),
+    mensaje TEXT,
+    fecha DATETIME NOT NULL,
+    FOREIGN KEY (envio_dian_id) REFERENCES ENVIO_DIAN(id)
+);
+
+CREATE TABLE AUDITORIA_USUARIO (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    accion VARCHAR(100),
+    modulo VARCHAR(100),
+    descripcion TEXT,
+    fecha DATETIME NOT NULL,
+    FOREIGN KEY (usuario_id) REFERENCES USUARIO(id)
+);
